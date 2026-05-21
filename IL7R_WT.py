@@ -40,6 +40,7 @@ print("Tumor Mutation Burden (TMB) in IL7R Mutant vs WT",tmb)
 # مقارنة التوزيع
 sns.boxplot(x="IL7R_status", y="Mutation_Count", data=tmb, palette="Set2")
 plt.title("Tumor Mutation Burden (TMB) in IL7R Mutant vs WT")
+plt.savefig("Tumor Mutation Burden (TMB) in IL7R Mutant vs WT.png")
 plt.show()
 
 # اختبار إحصائي (Mann-Whitney U)
@@ -92,7 +93,7 @@ subset["Immune_sum"] = subset[immune_genes].sum(axis=1)
 # 8. اختيار أعلى 10 مرضى
 top10 = subset.sort_values("Immune_sum", ascending=False).head(10)
 
-print("Top 10 patients by immune gene expression:")
+print("Top 100 patients by immune gene expression:")
 print(top10[["Immune_sum","IL7R_status"]])
 
 # 9. رسم Heatmap لأعلى 10 مرضى
@@ -100,9 +101,10 @@ plt.figure(figsize=(10,6))
 sns.heatmap(top10[immune_genes].T, cmap="viridis", cbar=True,
             xticklabels=top10.index, yticklabels=immune_genes)
 
-plt.title("Top 10 Patients - Immune Gene Expression")
+plt.title("Top 100 Patients - Immune Gene Expression")
 plt.xlabel("Patients")
 plt.ylabel("Immune Genes")
+plt.savefig("Immune Gene Expression.png")
 plt.show()
 
 
@@ -245,7 +247,7 @@ expr_T = expr.T
 expr_T["IL7R_status"] = ["Mutant" if sample in il7r_mutants else "WT" for sample in expr_T.index]
 
 # 5. الجينات المطلوبة (immune checkpoints)
-genes = ["CD274","PDCD1","CTLA4","LAG3","TIGIT","HAVCR2"]
+genes = ["PDCD1","CTLA4","LAG3","TIGIT","HAVCR2","CD274"]
 
 # 6. استخراج التعبير للجينات المطلوبة فقط
 subset = expr_T[genes + ["IL7R_status"]]
@@ -258,6 +260,7 @@ sns.heatmap(subset.sort_values("IL7R_status")[genes].T, cmap="mako", cbar=True,
 plt.title("Immune Checkpoint Gene Expression (IL7R Mutant vs WT)")
 plt.xlabel("Patients (sorted by IL7R status)")
 plt.ylabel("Immune Checkpoints")
+plt.savefig("Immune Checkpoint Gene Expression (IL7R Mutant vs WT).png")
 plt.show()
 
 # 8. اختبار إحصائي لكل جين
@@ -303,6 +306,7 @@ mut_counts["IL7R_status"] = ["Mutant" if sample in il7r_mutants else "WT" for sa
 for gene in target_genes:
     sns.boxplot(x="IL7R_status", y=gene, data=mut_counts, palette="Set2")
     plt.title(f"{gene} mutation count in IL7R Mutant vs WT")
+    plt.savefig("mutation count in IL7R Mutant vs WT.png")
     plt.show()
 
     # اختبار إحصائي
